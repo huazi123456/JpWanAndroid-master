@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="enable"
+            type="Boolean" />
+
+        <variable
+            name="refreshColor"
+            type="Integer" />
+
+        <variable
+            name="refreshing"
+            type="Boolean" />
+
+        <variable
+            name="needOverScroll"
+            type="Boolean" />
+
+        <variable
+            name="refreshListener"
+            type="androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener" />
+
+        <variable
+            name="editAction"
+            type="android.widget.TextView.OnEditorActionListener" />
+
+        <variable
+            name="adapter"
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
+
+        <variable
+            name="listener"
+            type="com.kuky.demo.wan.android.base.OnItemClickListener" />
+
+        <variable
+            name="dataNull"
+            type="Boolean" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_status_bar" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:paddingBottom="8dp">
+
+            <EditText
+                android:id="@+id/search_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/search_bg"
+                android:drawableStart="@drawable/ic_search_grey_18dp"
+                android:drawablePadding="8dp"
+                android:ellipsize="start"
+                android:gravity="center_vertical"
+                android:hint="@string/search_hint"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                bind:editAction="@{editAction}"
+                tools:ignore="Autofill,LabelFor" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:paddingBottom="4dp"
+            android:text="@string/hot_search_keys"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/keys_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            app:flexWrap="wrap" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            bind:refreshColor="@{refreshColor}"
+            bind:refreshEnable="@{enable}"
+            bind:refreshListener="@{refreshListener}"
+            bind:refreshState="@{refreshing}">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    layout="@layout/include_data_null"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    bind:isNull="@{dataNull}" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/search_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:adapter="@{adapter}"
+                    android:orientation="vertical"
+                    android:overScrollMode="@{needOverScroll ? View.OVER_SCROLL_IF_CONTENT_SCROLLS : View.OVER_SCROLL_NEVER}"
+                    android:padding="8dp"
+                    android:scrollbars="vertical"
+                    android:visibility="@{dataNull ? View.GONE : View.VISIBLE}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    bind:listItemClick="@{listener}"
+                    bind:pageItemClick="@{listener}"
+                    tools:listitem="@layout/recycler_home_article" />
+            </FrameLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="refreshColor"
+            type="Integer" />
+
+        <variable
+            name="refreshing"
+            type="Boolean" />
+
+        <variable
+            name="refreshListener"
+            type="androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener" />
+
+        <variable
+            name="adapter"
+            type="com.kuky.demo.wan.android.base.BaseRecyclerAdapter" />
+
+        <variable
+            name="listener"
+            type="com.kuky.demo.wan.android.base.OnItemClickListener" />
+
+        <variable
+            name="longListener"
+            type="com.kuky.demo.wan.android.base.OnItemLongClickListener" />
+
+        <variable
+            name="fragment"
+            type="com.kuky.demo.wan.android.ui.collectedwebsites.CollectedWebsitesFragment" />
+
+        <variable
+            name="dataNull"
+            type="Boolean" />
+
+        <variable
+            name="view"
+            type="android.view.View" />
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        bind:refreshColor="@{refreshColor}"
+        bind:refreshListener="@{refreshListener}"
+        bind:refreshState="@{refreshing}">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/website_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adapter="@{adapter}"
+                android:visibility="@{dataNull ? view.GONE : view.VISIBLE}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                bind:hasFixedSize="@{true}"
+                bind:listItemClick="@{listener}"
+                bind:listItemLongClick="@{longListener}"
+                tools:itemCount="20"
+                tools:listitem="@layout/recycler_collected_websites" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="30dp"
+                android:onClick="@{fragment::addCollectedWebsites}"
+                android:src="@drawable/ic_add_white_24dp"
+                app:fabSize="mini" />
+
+            <include
+                layout="@layout/include_data_null"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                bind:isNull="@{dataNull}" />
+
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>
